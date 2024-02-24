@@ -22,7 +22,7 @@ return {
 
         cmp.setup({
             completion = {
-                completeopt = "menu,menuone,preview,noselect",
+                completeopt = "menu,menuone,preview,select",
             },
             snippet = { -- configure how nvim-cmp interacts with snippet engine
                 expand = function(args)
@@ -34,15 +34,21 @@ return {
                 ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
                 ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-                ["<C-e>"] = cmp.mapping.abort(),        -- close completion window
-                ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                ["<TAB>"] = cmp.mapping.confirm({ select = false }),
+                ["<C-Space>"] = cmp.mapping.complete({
+                    config = {
+                        sources = {
+                            { name = "cody" },
+                        }
+                    },
+                }),                              -- show completion suggestions
+                ["<C-e>"] = cmp.mapping.abort(), -- close completion window
+                ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                ["<TAB>"] = cmp.mapping.confirm({ select = true }),
             }),
             -- sources for autocompletion
             sources = cmp.config.sources({
+                { name = "cody" },
                 { name = "nvim_lsp" },
-                { name = "sg" },
                 { name = "luasnip" }, -- snippets
                 { name = "buffer" },  -- text within current buffer
                 { name = "path" },    -- file system paths
@@ -52,6 +58,11 @@ return {
                 format = lspkind.cmp_format({
                     maxwidth = 50,
                     ellipsis_char = "...",
+                    with_text = true,
+                    menu = {
+                        nvim_lsp = "[LSP]",
+                        cody = "[cody]"
+                    }
                 }),
             },
         })
@@ -59,7 +70,8 @@ return {
         cmp.setup.cmdline('/', {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
-                { name = 'buffer' }
+                { name = 'buffer' },
+                { name = 'cody' }
             }
         })
 
