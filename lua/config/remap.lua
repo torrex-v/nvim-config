@@ -1,5 +1,10 @@
 vim.g.mapleader = " "
 --vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+            local opts = { noremap = true, silent = true }
+            opts.desc = "Last buffer"
+vim.keymap.set("n", "<leader>bb",":blast<CR>",opts)
+opts.desc = "Next buffer"
+vim.keymap.set("n", "<leader>bn",":bnext<CR>",opts)
 vim.keymap.set("n", "<leader>pv",":Neotree filesystem reveal left toggle<CR>")
 vim.keymap.set("n", "<leader>pvb",":Neotree buffers float<CR>")
 vim.keymap.set("n", "<leader>pvg",":Neotree git_status float <CR>")
@@ -57,3 +62,17 @@ vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_refere
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+vim.api.nvim_set_keymap('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<F11>', '<Cmd>lua require"dap".step_into()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<F12>', '<Cmd>lua require"dap".step_out()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>b', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>B',
+    '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>lp',
+    '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>ss', '<Cmd>lua require"sg.extensions.telescope".fuzzy_search_result()<CR>',
+    { silent = false })

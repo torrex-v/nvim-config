@@ -8,7 +8,7 @@ return {
     {
         "williamboman/mason-lspconfig.nvim",
         lazy = false,
-        opts ={
+        opts = {
             auto_install = true,
         }
         -- config = function()
@@ -107,6 +107,36 @@ return {
             require("sg").setup({
                 on_attach = on_attach
             })
+            lspconfig.jsonls.setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+                settings = {
+                    json = {
+                        schemas = {
+                            {
+                                fileMatch = { ".prettierrc", "package.json" },
+                                url = "https://json.schemastore.org/prettierrc",
+                            },
+                            {
+                                fileMatch = { "package.json" },
+                                url = "https://json.schemastore.org/package",
+                            },
+                            {
+                                fileMatch = { ".eslintrc", ".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml" },
+                                url = "https://json.schemastore.org/eslintrc",
+                            },
+                            {
+                                fileMatch = { ".stylelintrc", ".stylelintrc.json", ".stylelintrc.yaml", ".stylelintrc.yml" },
+                                url = "https://json.schemastore.org/stylelintrc",
+                            },
+                            {
+                                fileMatch = { ".prettierrc", ".prettierrc.json", ".prettierrc.yaml", ".prettierrc.yml" },
+                                url = "https://json.schemastore.org/prettierrc",
+                            },
+                        }
+                    }
+                }
+            });
             lspconfig.rust_analyzer.setup({
                 on_attach = on_attach,
                 settings = {
@@ -140,7 +170,7 @@ return {
             require 'lspconfig'.html.setup({
                 capabilities = capabilities
             })
-            require'lspconfig'.eslint.setup{}
+            require 'lspconfig'.eslint.setup {}
             lspconfig.eslint.setup({
                 --- ...
                 on_attach = function(client, bufnr)

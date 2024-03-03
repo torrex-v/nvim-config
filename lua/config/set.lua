@@ -1,3 +1,7 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+vim.opt.clipboard = "unnamedplus"
+
 vim.opt.guicursor = ""
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -26,3 +30,12 @@ vim.opt.signcolumn = "yes" vim.opt.isfname:append("@-@")
 --vim.opt.updatetime = 50
 
 --vim.opt.colorcolumn = "80"
+
+
+-- DO NOT INCLUDE THIS
+vim.opt.rtp:append("~/personal/streamer-tools")
+-- DO NOT INCLUDE THIS
+vim.g.netrw_browse_split = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
+

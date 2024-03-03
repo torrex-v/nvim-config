@@ -1,12 +1,7 @@
 --require('nvim-treesitter.install').compilers = { "gcc" }
-
-require("config.lazy");
 require("config.set");
+require("config.lazy");
 require("config.remap");
-
--- DO NOT INCLUDE THIS
-vim.opt.rtp:append("~/personal/streamer-tools")
--- DO NOT INCLUDE THIS
 
 local augroup = vim.api.nvim_create_augroup
 local ThePrimeagenGroup = augroup('thePayman', {})
@@ -35,9 +30,12 @@ autocmd({"BufWritePre"}, {
     command = [[%s/\s\+$//e]],
 })
 
-vim.g.netrw_browse_split = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
 
 
+function ColorMyPencils(color)
+    color = color or "catppuccin"
+    vim.cmd.colorscheme(color)
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+end
 
