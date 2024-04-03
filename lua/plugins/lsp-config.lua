@@ -5,6 +5,7 @@ return {
             require("mason").setup()
         end,
     },
+{ "nvim-neotest/nvim-nio" },
     {
         "williamboman/mason-lspconfig.nvim",
         lazy = false,
@@ -158,10 +159,14 @@ return {
                     },
                 },
             })
-            lspconfig.csharp_ls.setup({
-                on_attach = on_attach,
-                capabilities = capabilities
-            })
+            -- lspconfig.csharp_ls.setup({
+            --     on_attach = on_attach,
+            --     capabilities = capabilities
+            -- })
+lspconfig.clangd.setup{
+    capabilities = capabilities,
+    on_attach = on_attach,
+}
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
                 on_attach = on_attach,

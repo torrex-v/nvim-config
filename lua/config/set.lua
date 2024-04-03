@@ -3,6 +3,7 @@ vim.g.maplocalleader = " "
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.guicursor = ""
+vim.opt.termguicolors = true
 vim.opt.nu = true
 vim.opt.relativenumber = true
 

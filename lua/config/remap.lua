@@ -2,9 +2,9 @@ vim.g.mapleader = " "
 --vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
             local opts = { noremap = true, silent = true }
             opts.desc = "Last buffer"
-vim.keymap.set("n", "<leader>bb",":blast<CR>",opts)
+vim.keymap.set("n", "<leader>[b",":bprevious<CR>",opts)
 opts.desc = "Next buffer"
-vim.keymap.set("n", "<leader>bn",":bnext<CR>",opts)
+vim.keymap.set("n", "<leader>]b",":bnext<CR>",opts)
 vim.keymap.set("n", "<leader>pv",":Neotree filesystem reveal left toggle<CR>")
 vim.keymap.set("n", "<leader>pvb",":Neotree buffers float<CR>")
 vim.keymap.set("n", "<leader>pvg",":Neotree git_status float <CR>")

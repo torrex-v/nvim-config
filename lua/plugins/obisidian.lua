@@ -18,7 +18,7 @@ return {
             workspaces = {
                 {
                     name = "personal",
-                    path = "~/Documents/Obsidian Vaults",
+                    path = "~/Documents/Obsidian Vault",
                 },
             },
             wiki_link_func = function(opts)
