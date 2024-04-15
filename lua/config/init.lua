@@ -24,7 +24,7 @@ autocmd('TextYankPost', {
     end,
 })
 
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
     group = ThePrimeagenGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
@@ -32,10 +32,13 @@ autocmd({"BufWritePre"}, {
 
 
 
-function ColorMyPencils(color)
+function ColorMyPencils(color, noBg)
     color = color or "catppuccin"
+    noBg = noBg or false
+    print(noBg)
     vim.cmd.colorscheme(color)
-    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    if noBg then
+        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    end
 end
-
