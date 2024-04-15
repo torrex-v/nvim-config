@@ -259,6 +259,11 @@ lspconfig.clangd.setup{
                 on_attach = on_attach
             } }
 
+            require 'lspconfig'.intelephense.setup { {
+                capabilities = capabilities,
+                on_attach = on_attach
+            } }
+
             --
             vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
             vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)

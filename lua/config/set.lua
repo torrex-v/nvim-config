@@ -2,6 +2,9 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.clipboard = "unnamedplus"
 
+vim.opt.ignorecase =  true
+vim.opt.smartcase= true
+
 vim.opt.guicursor = ""
 vim.opt.termguicolors = true
 vim.opt.nu = true
