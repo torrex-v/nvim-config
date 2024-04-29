@@ -1,22 +1,19 @@
 return {
     {
         "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup()
-        end,
     },
-{ "nvim-neotest/nvim-nio" },
+    {     "neovim/nvim-lspconfig"},
     {
         "williamboman/mason-lspconfig.nvim",
         lazy = false,
         opts = {
             auto_install = true,
-        }
-        -- config = function()
-        --     require("mason-lspconfig").setup({
-        --         ensure_installed = { "lua_ls", "tsserver", "csharp_ls" },
-        --     })
-        -- end,
+        },
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = { "lua_ls", "tsserver", "html","tailwindcss","rust_analyzer" },
+            })
+        end,
     },
     {
         "neovim/nvim-lspconfig",
@@ -31,6 +28,8 @@ return {
         lazy = false,
         event = { "BufReadPre", "BufNewFile" },
         config = function()
+require("mason").setup()
+require("mason-lspconfig").setup()
             local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities();
 
