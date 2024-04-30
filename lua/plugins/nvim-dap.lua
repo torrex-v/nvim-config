@@ -1,6 +1,7 @@
 return
 {
     { "nvim-lua/popup.nvim" },
+{ "nvim-neotest/nvim-nio" },
     { "nvim-lua/plenary.nvim" },
     {
         "tomblind/local-lua-debugger-vscode",
