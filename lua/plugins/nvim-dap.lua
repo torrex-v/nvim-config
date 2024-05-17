@@ -1,7 +1,7 @@
 return
 {
     { "nvim-lua/popup.nvim" },
-{ "nvim-neotest/nvim-nio" },
+    { "nvim-neotest/nvim-nio" },
     { "nvim-lua/plenary.nvim" },
     {
         "tomblind/local-lua-debugger-vscode",
@@ -13,79 +13,53 @@ return
         dependencies = {
             "rcarriga/nvim-dap-ui",
             "leoluz/nvim-dap-go",
-        "tomblind/local-lua-debugger-vscode",
+            "tomblind/local-lua-debugger-vscode",
+            "leoluz/nvim-dap-go",
+            "theHamsta/nvim-dap-virtual-text",
+            "nvim-neotest/nvim-nio",
+            "williamboman/mason.nvim",
         },
         config = function()
             local dap, dapui = require("dap"), require("dapui")
 
-            dapui.setup({
-                icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
-                mappings = {
-                    -- Use a table to apply multiple mappings
-                    expand = { "<CR>", "<2-LeftMouse>" },
-                    open = "o",
-                    remove = "d",
-                    edit = "e",
-                    repl = "r",
-                    toggle = "t",
-                },
-                element_mappings = {
+            require("dapui").setup()
+            require("dap-go").setup()
 
-                },
+            require("nvim-dap-virtual-text").setup {
+                -- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening...
+                display_callback = function(variable)
+                    local name = string.lower(variable.name)
+                    local value = string.lower(variable.value)
+                    if name:match "secret" or name:match "api" or value:match "secret" or value:match "api" then
+                        return "*****"
+                    end
 
-                expand_lines = vim.fn.has("nvim-0.7") == 1,
+                    if #variable.value > 15 then
+                        return " " .. string.sub(variable.value, 1, 15) .. "... "
+                    end
 
-                layouts = {
-                    {
-                        elements = {
-                            -- Elements can be strings or table with id and size keys.
-                            { id = "scopes", size = 0.25 },
-                            "breakpoints",
-                            "stacks",
-                            "watches",
-                        },
-                        size = 40, -- 40 columns
-                        position = "left",
-                    },
-                    {
-                        elements = {
-                            "repl",
-                            "console",
-                        },
-                        size = 0.25, -- 25% of total lines
-                        position = "bottom",
-                    },
-                },
-                controls = {
-                    -- Requires Neovim nightly (or 0.8 when released)
-                    enabled = true,
-                    -- Display controls in this element
-                    element = "repl",
-                    icons = {
-                        pause = "",
-                        play = "",
-                        step_into = "",
-                        step_over = "",
-                        step_out = "",
-                        step_back = "",
-                        run_last = "↻",
-                        terminate = "□",
-                    },
-                },
-                floating = {
-                    max_height = nil,  -- These can be integers or a float between 0 and 1.
-                    max_width = nil,   -- Floats will be treated as percentage of your screen.
-                    border = "single", -- Border style. Can be "single", "double" or "rounded"
-                    mappings = {
-                        close = { "q", "<Esc>" },
-                    },
-                },
-                windows = { indent = 1 },
-                render = {
-                    max_type_length = nil, -- Can be integer or nil.
-                    max_value_lines = 100, -- Can be integer or nil.
+                    return " " .. variable.value
+                end,
+            }
+            local elixir_ls_debugger = vim.fn.exepath "elixir-ls-debugger"
+            if elixir_ls_debugger ~= "" then
+                dap.adapters.mix_task = {
+                    type = "executable",
+                    command = elixir_ls_debugger,
                 }
-            })
+
+                dap.configurations.elixir = {
+                    {
+                        type = "mix_task",
+                        name = "phoenix server",
+                        task = "phx.server",
+                        request = "launch",
+                        projectDir = "${workspaceFolder}",
+                        exitAfterTaskReturns = false,
+                        debugAutoInterpretAllModules = false,
+                    },
+                }
+            end
 
             -- lua
             dap.adapters["local-lua"] = {
@@ -135,9 +109,7 @@ return
                 },
             }
 
-            require("dapui").setup()
-            require("dap-go").setup()
---keymaps
+            --keymaps
             dap.listeners.before.attach.dapui_config = function()
                 dapui.open()
             end
@@ -151,7 +123,7 @@ return
                 dapui.close()
             end
 
-            vim.keymap.set('n', '<F5>', dap.continue,{})
+            vim.keymap.set('n', '<F5>', dap.continue, {})
             vim.keymap.set('n', '<F10>', dap.step_over, { silent = true })
             vim.keymap.set('n', '<F11>', dap.step_into, { silent = true })
             vim.keymap.set('n', '<F12>', dap.step_out, { silent = true })
@@ -161,6 +133,12 @@ return
             -- vim.keymap.set('n', '<Leader>lp', dap.set_breakpoin(vim.fn.input("Log point message: ")), { silent = true })
             vim.keymap.set('n', '<Leader>dr', dap.repl.open, { silent = true })
             vim.keymap.set('n', '<Leader>dl', dap.run_last, { silent = true })
+
+            vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
+            vim.keymap.set("n", "<space>gb", dap.run_to_cursor)
+            vim.keymap.set("n", "<space>?", function()
+                require("dapui").eval(nil, { enter = true })
+            end)
         end
     }
 }

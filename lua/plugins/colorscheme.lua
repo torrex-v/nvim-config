@@ -9,6 +9,19 @@ return
             -- require("gruvbox").setup({})
         end
     },
+    "rktjmp/lush.nvim",
+    "tckmn/hotdog.vim",
+    "dundargoc/fakedonalds.nvim",
+    "craftzdog/solarized-osaka.nvim",
+    "tjdevries/colorbuddy.nvim",
+    "tjdevries/gruvbuddy.nvim",
+    { "rose-pine/neovim",        name = "rose-pine" },
+    "eldritch-theme/eldritch.nvim",
+    "jesseleite/nvim-noirbuddy",
+    "vim-scripts/MountainDew.vim",
+    "miikanissi/modus-themes.nvim",
+    "rebelot/kanagawa.nvim",
+    "gremble0/yellowbeans.nvim",
     { "ellisonleao/gruvbox.nvim" },
     { "folke/tokyonight.nvim" },
     { "rose-pine/neovim" },
@@ -96,7 +109,7 @@ return
     },
     {
         'loctvl842/monokai-pro.nvim',
-        config = function ()
+        config = function()
 
         end
     },
