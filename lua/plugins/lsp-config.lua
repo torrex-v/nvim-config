@@ -97,189 +97,111 @@ return {
                 vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
             end
 
-            local disable_semantic_tokens = {
-                lua = true,
-            }
-            require("sg").setup({
-                on_attach = on_attach
-            })
-            require('lspconfig').jsonls.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                settings = {
-                    json = {
-                        schemas = {
-                            {
-                                fileMatch = { ".prettierrc", "package.json" },
-                                url = "https://json.schemastore.org/prettierrc",
-                            },
-                            {
-                                fileMatch = { "package.json" },
-                                url = "https://json.schemastore.org/package",
-                            },
-                            {
-                                fileMatch = { ".eslintrc", ".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml" },
-                                url = "https://json.schemastore.org/eslintrc",
-                            },
-                            {
-                                fileMatch = { ".stylelintrc", ".stylelintrc.json", ".stylelintrc.yaml",
-                                    ".stylelintrc.yml" },
-                                url = "https://json.schemastore.org/stylelintrc",
-                            },
-                            {
-                                fileMatch = { ".prettierrc", ".prettierrc.json", ".prettierrc.yaml", ".prettierrc.yml" },
-                                url = "https://json.schemastore.org/prettierrc",
-                            },
-                        }
-                    }
-                }
-            });
-            lspconfig.rust_analyzer.setup({
-                on_attach = on_attach,
-                settings = {
-                    ["rust-analyzer"] = {
-                        imports = {
-                            granularity = {
-                                group = "module",
-                            },
-                            prefix = "self",
-                        },
-                        cargo = {
-                            buildScripts = {
-                                enable = true,
-                            },
-                        },
-                        procMacro = {
-                            enable = true,
-                        },
-                    },
-                },
-            })
-            -- lspconfig.csharp_ls.setup({
-            --     on_attach = on_attach,
-            --     capabilities = capabilities
-            -- })
-            lspconfig.clangd.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-            }
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
             capabilities.textDocument.completion.completionItem.snippetSupport = true
-            require 'lspconfig'.html.setup({
-                capabilities = capabilities
-            })
-            require 'lspconfig'.eslint.setup {}
-            lspconfig.eslint.setup({
-                --- ...
-                on_attach = function(client, bufnr)
-                    vim.api.nvim_create_autocmd("BufWritePre", {
-                        buffer = bufnr,
-                        command = "EslintFixAll",
-                    })
-                end,
-            })
-            lspconfig.html.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                cmd = { "vscode-html-language-server", "--stdio" },
-                filetypes = { "html" },
-                init_options = {
-                    configurationSection = { "html", "css", "javascript" },
-                    embeddedLanguages = {
-                        css = true,
-                        javascript = true
-                    }
-                },
-            })
-
-            lspconfig.tsserver.setup {}
-            -- configure typescript server with plugin
-            lspconfig.tsserver.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
-
-            lspconfig.pyright.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-            }
-
-            -- configure css server
-            lspconfig.cssls.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
-
-            -- configure tailwindcss server
-            lspconfig.tailwindcss.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
-
-            -- configure svelte server
-            lspconfig.svelte.setup({
-                capabilities = capabilities,
-                on_attach = function(client, bufnr)
-                    on_attach(client, bufnr)
-
-                    vim.api.nvim_create_autocmd("BufWritePost", {
-                        pattern = { "*.js", "*.ts" },
-                        callback = function(ctx)
-                            if client.name == "svelte" then
-                                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                            end
-                        end,
-                    })
-                end,
-            })
 
             local pid = vim.fn.getpid()
             local os_capabilities =
                 require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-            lspconfig.omnisharp.setup({
-                cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) },
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
-            --configure slint-lsp
-            require 'lspconfig'.slint_lsp.setup { {
-                capabilities = capabilities,
-                on_attach = on_attach
-            } }
-
-            require 'lspconfig'.htmx.setup { {
-                capabilities = capabilities,
-                on_attach = on_attach
-            } }
-
-            require 'lspconfig'.intelephense.setup { {
-                capabilities = capabilities,
-                on_attach = on_attach
-            } }
             local servers = {
                 bashls = true,
                 gopls = true,
-                lua_ls = { on_attach = on_attach, capabilities = capabilities },
-                rust_analyzer = true,
-                svelte = true,
+                lua_ls = true,
+                eslint = {
+                    on_attach = function(client, bufnr)
+                        vim.api.nvim_create_autocmd("BufWritePre", {
+                            buffer = bufnr,
+                            command = "EslintFixAll",
+                        })
+                    end,
+                },
+                rust_analyzer = {
+                    settings = {
+                        ["rust-analyzer"] = {
+                            imports = {
+                                granularity = {
+                                    group = "module",
+                                },
+                                prefix = "self",
+                            },
+                            cargo = {
+                                buildScripts = {
+                                    enable = true,
+                                },
+                            },
+                            procMacro = {
+                                enable = true,
+                            },
+                        },
+                    },
+                },
+                svelte = {
+                    on_attach = function(client, bufnr)
+                        on_attach(client, bufnr)
+
+                        vim.api.nvim_create_autocmd("BufWritePost", {
+                            pattern = { "*.js", "*.ts" },
+                            callback = function(ctx)
+                                if client.name == "svelte" then
+                                    client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                                end
+                            end,
+                        })
+                    end,
+                },
                 templ = true,
                 cssls = true,
-
+                slint_lsp = true,
+                htmx = true,
+                html = {
+                    cmd = { "vscode-html-language-server", "--stdio" },
+                    filetypes = { "html" },
+                    init_options = {
+                        configurationSection = { "html", "css", "javascript" },
+                        embeddedLanguages = {
+                            css = true,
+                            javascript = true
+                        }
+                    },
+                },
+                intelephense = true,
+                pyright = true,
+                omnisharp = { cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) } },
                 -- Probably want to disable formatting for this lang server
                 tsserver = true,
+                tailwindcss = true,
 
                 jsonls = {
                     settings = {
                         json = {
-                            schemas = require("schemastore").json.schemas(),
-                            validate = { enable = true },
+                            schemas = {
+                                {
+                                    fileMatch = { ".prettierrc", "package.json" },
+                                    url = "https://json.schemastore.org/prettierrc",
+                                },
+                                {
+                                    fileMatch = { "package.json" },
+                                    url = "https://json.schemastore.org/package",
+                                },
+                                {
+                                    fileMatch = { ".eslintrc", ".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml" },
+                                    url = "https://json.schemastore.org/eslintrc",
+                                },
+                                {
+                                    fileMatch = { ".stylelintrc", ".stylelintrc.json", ".stylelintrc.yaml",
+                                        ".stylelintrc.yml" },
+                                    url = "https://json.schemastore.org/stylelintrc",
+                                },
+                                {
+                                    fileMatch = { ".prettierrc", ".prettierrc.json", ".prettierrc.yaml",
+                                        ".prettierrc.yml" },
+                                    url = "https://json.schemastore.org/prettierrc",
+                                },
+                                require("schemastore").json.schemas(),
+                                validate = { enable = true },
+                            },
                         },
-                    },
+                    }
                 },
-
                 yamlls = {
                     settings = {
                         yaml = {
@@ -291,7 +213,6 @@ return {
                         },
                     },
                 },
-
                 ocamllsp = {
                     manual_install = true,
                     settings = {
@@ -308,10 +229,10 @@ return {
                     -- TODO: Check if i still need the filtypes stuff i had before
                 },
 
-                lexical = {
-                    cmd = { "/home/tjdevries/.local/share/nvim/mason/bin/lexical", "server" },
-                    root_dir = require("lspconfig.util").root_pattern { "mix.exs" },
-                },
+                -- lexical = {
+                --     cmd = { "/home/tjdevries/.local/share/nvim/mason/bin/lexical", "server" },
+                --     root_dir = require("lspconfig.util").root_pattern { "mix.exs" },
+                -- },
 
                 clangd = {
                     -- TODO: Could include cmd, but not sure those were all relevant flags.
@@ -347,8 +268,8 @@ return {
                 end
                 config = vim.tbl_deep_extend("force", {}, {
                     capabilities = capabilities,
+                    on_attach = on_attach,
                 }, config)
-
                 lspconfig[name].setup(config)
             end
 
