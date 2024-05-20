@@ -16,7 +16,11 @@ cmp.setup({
 	},
 	snippet = { -- configure how nvim-cmp interacts with snippet engine
 		expand = function(args)
-			luasnip.lsp_expand(args.body)
+			vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+			-- luasnip.lsp_expand(args.body)
+			--   -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+			-- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+			-- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
 		end,
 	},
 	mapping = cmp.mapping.preset.insert({
@@ -24,17 +28,11 @@ cmp.setup({
 		["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete({
-			-- config = {
-			--     sources = {
-			--         { name = "cody" },
-			--     }
-			-- },
-		}), -- show completion suggestions
+		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(), -- close completion window
 		-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
 		["<TAB>"] = cmp.mapping.confirm({
-			select = true,
+			select = false,
 			behavior = cmp.ConfirmBehavior.Replace,
 		}), -- confirm completion
 	}),
@@ -42,8 +40,8 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{ name = "cody" },
 		{ name = "nvim_lsp" },
-		{ name = "luasnip" }, -- snippets
 		{ name = "vsnip" }, -- snippets
+		{ name = "luasnip" }, -- snippets
 		{ name = "buffer" }, -- text within current buffer
 		{ name = "path" }, -- file system paths
 	}),
@@ -52,7 +50,7 @@ cmp.setup({
 		format = lspkind.cmp_format({
 			maxwidth = 50,
 			ellipsis_char = "...",
-			with_text = true,
+			with_tsxt = true,
 			menu = {
 				nvim_lsp = "[LSP]",
 				cody = "[cody]",
@@ -64,6 +62,8 @@ cmp.setup({
 cmp.setup.cmdline("/", {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
+		{ name = "nvim_lsp" },
+		{ name = "vsnip" },
 		{ name = "buffer" },
 		{ name = "cody" },
 	},
@@ -74,6 +74,7 @@ cmp.setup.cmdline(":", {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources({
 		{ name = "path" },
+		{ name = "nvim_lsp" },
 	}, {
 		{
 			name = "cmdline",

@@ -21,3 +21,9 @@ nnoremap  <Leader>B<CR>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint 
 nnoremap  <Leader>lp<CR>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 nnoremap  <Leader>dr<CR>lua require'dap'.repl.open()<CR>
 nnoremap  <Leader>dl<CR>lua require'dap'.run_last()<CR>
+
+
+imap xx yy
+imap y zz
+imap z aa
+aaaaaaaa
