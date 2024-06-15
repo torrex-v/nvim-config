@@ -1,0 +1,3 @@
+return {
+	"albingroen/quick.nvim",
+}

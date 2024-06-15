@@ -20,6 +20,7 @@ return {
 	"jesseleite/nvim-noirbuddy",
 	"vim-scripts/MountainDew.vim",
 	"miikanissi/modus-themes.nvim",
+	"phanviet/vim-monokai-pro",
 	"rebelot/kanagawa.nvim",
 	"gremble0/yellowbeans.nvim",
 	{ "ellisonleao/gruvbox.nvim" },

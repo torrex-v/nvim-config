@@ -1,5 +1,13 @@
-local cmp = require("cmp")
+local t = function(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
 
+local check_back_space = function()
+	local col = vim.fn.col(".") - 1
+	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
+end
+
+local cmp = require("cmp")
 local luasnip = require("luasnip")
 luasnip.config.set_config({
 	history = false,
@@ -35,6 +43,13 @@ cmp.setup({
 			select = false,
 			behavior = cmp.ConfirmBehavior.Replace,
 		}), -- confirm completion
+		["<S-Tab>"] = cmp.mapping(function(fallback)
+			if vim.fn.pumvisible() == 1 then
+				vim.fn.feedkeys(t("<C-p>"), "n")
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
 	}),
 	-- sources for autocompletion
 	sources = cmp.config.sources({
@@ -47,6 +62,9 @@ cmp.setup({
 	}),
 	-- configure lspkind for vs-code like pictograms in completion menu
 	formatting = {
+
+		fields = { "abbr", "kind", "menu" },
+		expandable_indicator = true,
 		format = lspkind.cmp_format({
 			maxwidth = 50,
 			ellipsis_char = "...",
@@ -90,3 +108,14 @@ cmp.setup.filetype({ "sql" }, {
 		{ name = "buffer" },
 	},
 })
+require("nvim-autopairs").setup({
+	map_cr = true,
+	map_complete = true,
+	auto_select = true,
+})
+vim.api.nvim_exec(
+	[[
+autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+]],
+	false
+)

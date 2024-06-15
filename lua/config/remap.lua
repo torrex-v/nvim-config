@@ -10,9 +10,9 @@ set("n", "<M-.>", "<c-w>5>")
 set("n", "<M-t>", "<C-W>+")
 set("n", "<M-s>", "<C-W>-")
 
-vim.keymap.set("n", "<leader>[", ":bprevious<CR>", opts)
+vim.keymap.set("n", "[[", ":bprevious<CR>", opts)
 opts.desc = "Next buffer"
-vim.keymap.set("n", "<leader>]", ":bnext<CR>", opts)
+vim.keymap.set("n", "]]", ":bnext<CR>", opts)
 vim.keymap.set("n", "<leader>pv", ":Neotree filesystem reveal left toggle<CR>")
 vim.keymap.set("n", "<leader>pvb", ":Neotree buffers float<CR>")
 vim.keymap.set("n", "<leader>pvg", ":Neotree git_status float <CR>")
