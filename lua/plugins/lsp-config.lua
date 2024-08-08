@@ -164,7 +164,20 @@ return {
 				},
 				templ = true,
 				cssls = true,
-				slint_lsp = true,
+				slint_lsp = {
+					on_attach = function(client, bufnr)
+						on_attach(client, bufnr)
+						vim.cmd([[ autocmd BufRead,BufNewFile *.slint set filetype=slint ]])
+						vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+							pattern = { "*.slint" },
+							callback = function(ctx)
+								if client.name == "slint_lsp" then
+									client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+								end
+							end,
+						})
+					end,
+				},
 				htmx = true,
 				html = {
 					cmd = { "vscode-html-language-server", "--stdio" },
