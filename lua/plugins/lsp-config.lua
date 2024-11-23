@@ -193,9 +193,9 @@ return {
 				intelephense = true,
 				pyright = true,
 				omnisharp = { cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) } },
-				tsserver = true,
+				ts_ls = true,
 				tailwindcss = true,
-
+				csharp_ls = true,
 				jsonls = {
 					settings = {
 						json = {
@@ -289,7 +289,7 @@ return {
 			local ensure_installed = {
 				"stylua",
 				"lua_ls",
-				"delve",
+				-- "delve",
 				-- "tailwind-language-server",
 			}
 			vim.list_extend(ensure_installed, servers_to_install)
