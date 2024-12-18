@@ -1,73 +1,100 @@
 vim.g.mapleader = " "
-local set = vim.keymap.set
---vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+local map = vim.keymap.set
+--map("n", "<leader>pv", vim.cmd.Ex)
 local opts = { noremap = true, silent = true }
 opts.desc = "Last buffer"
-set("n", "<leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
-set("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Execute the current file" })
-set("n", "<M-,>", "<c-w>5<")
-set("n", "<M-.>", "<c-w>5>")
-set("n", "<M-t>", "<C-W>+")
-set("n", "<M-s>", "<C-W>-")
+-- map("n", "<leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
+-- map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+map("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Execute the current file" })
+map("n", "<M-,>", "<c-w>5<")
+map("n", "<M-.>", "<c-w>5>")
+map("n", "<M-t>", "<C-W>+")
+map("n", "<M-s>", "<C-W>-")
+-- nvchad shortcuts
+map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
+map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
+map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
+map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
 
-vim.keymap.set("n", "<leader>[", ":bprevious<CR>", opts)
+map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
+
+map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
+map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
+-- map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+-- map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
+-- map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
+
+map("n", "<leader>x", function()
+	require("nvchad.tabufline").close_buffer()
+end, { desc = "buffer close" })
+map("n", "<tab>", function()
+	require("nvchad.tabufline").next()
+end, { desc = "buffer goto next" })
+
+map("n", "<S-tab>", function()
+	require("nvchad.tabufline").prev()
+end, { desc = "buffer goto prev" })
+map("n", "<leader>th", function()
+	require("nvchad.themes").open()
+end, { desc = "telescope nvchad themes" })
+--------------------
+map("n", "<leader>[", ":bprevious<CR>", opts)
 opts.desc = "Next buffer"
-vim.keymap.set("n", "<leader>]", ":bnext<CR>", opts)
-vim.keymap.set("n", "<leader>pv", ":Neotree filesystem reveal left toggle<CR>")
-vim.keymap.set("n", "<leader>pvb", ":Neotree buffers float<CR>")
-vim.keymap.set("n", "<leader>pvg", ":Neotree git_status float <CR>")
+map("n", "<leader>]", ":bnext<CR>", opts)
+map("n", "<leader>pv", ":Neotree filesystem reveal left toggle<CR>")
+map("n", "<leader>pvb", ":Neotree buffers float<CR>")
+map("n", "<leader>pvg", ":Neotree git_status float <CR>")
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+map("v", "J", ":m '>+1<CR>gv=gv")
+map("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+map("n", "J", "mzJ`z")
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
 
-vim.keymap.set("n", "<leader>vwm", function()
+map("n", "<leader>vwm", function()
 	require("vim-with-me").StartVimWithMe()
 end)
-vim.keymap.set("n", "<leader>svwm", function()
+map("n", "<leader>svwm", function()
 	require("vim-with-me").StopVimWithMe()
 end)
 
 -- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
+map("x", "<leader>p", [["_dP]])
 
 -- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
-vim.keymap.set("n", "<leader>pp", [["+p]])
+map({ "n", "v" }, "<leader>y", [["+y]])
+map("n", "<leader>Y", [["+Y]])
+map("n", "<leader>pp", [["+p]])
 
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+map({ "n", "v" }, "<leader>d", [["_d]])
 
 -- This is going to get me cancelled
-vim.keymap.set("i", "<C-c>", "<Esc>")
+map("i", "<C-c>", "<Esc>")
 
-vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+map("n", "Q", "<nop>")
+map("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+map("n", "<leader>f", vim.lsp.buf.format)
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+map("n", "<C-k>", "<cmd>cnext<CR>zz")
+map("n", "<C-j>", "<cmd>cprev<CR>zz")
+map("n", "<leader>k", "<cmd>lnext<CR>zz")
+map("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/AppData/Local/nvim/lua/thepayman/lazy.lua<CR>")
-vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
+-- map("n", "<leader>vpp", "<cmd>e ~/AppData/Local/nvim/lua/thepayman/lazy.lua<CR>")
+map("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 
-vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-vim.keymap.set("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>")
-vim.keymap.set("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-vim.keymap.set("n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>")
-vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>")
+map("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
+map("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>")
+map("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
+map("n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>")
+map("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>")
 
-vim.keymap.set("n", "<leader><leader>", function()
+map("n", "<leader><leader>", function()
 	vim.cmd("so")
 end)
 
@@ -79,13 +106,13 @@ vim.api.nvim_set_keymap("n", "<Leader>b", '<Cmd>lua require"dap".toggle_breakpoi
 vim.api.nvim_set_keymap(
 	"n",
 	"<Leader>B",
-	'<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>',
+	'<Cmd>lua require"dap".map_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>',
 	{ silent = true }
 )
 vim.api.nvim_set_keymap(
 	"n",
 	"<Leader>lp",
-	'<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',
+	'<Cmd>lua require"dap".map_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',
 	{ silent = true }
 )
 vim.api.nvim_set_keymap("n", "<Leader>dr", '<Cmd>lua require"dap".repl.open()<CR>', { silent = true })

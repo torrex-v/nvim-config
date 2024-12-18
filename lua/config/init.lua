@@ -1,4 +1,5 @@
 --require('nvim-treesitter.install').compilers = { "gcc" }
+require("config.nvchadUi")
 require("config.set")
 require("config.remap")
 
