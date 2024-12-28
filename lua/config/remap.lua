@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 local map = vim.keymap.set
---map("n", "<leader>pv", vim.cmd.Ex)
+map("n", "<leader>pv", vim.cmd.Ex)
 local opts = { noremap = true, silent = true }
 opts.desc = "Last buffer"
 -- map("n", "<leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
@@ -18,8 +18,19 @@ map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
+-- greatest remap ever
+map("x", "<leader>p", [["_dP]])
+
+-- next greatest remap ever : asbjornHaland
+map({ "n", "v" }, "<leader>y", [["+y]])
+map("n", "<leader>Y", [["+Y]])
+map("n", "<leader>pp", [["+p]])
+
+map({ "n", "v" }, "<leader>d", [["_d]])
+
+-- map("i", "<C-c>", "<Esc>")
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
-map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
+-- map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
 -- map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 -- map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 -- map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
@@ -41,9 +52,6 @@ end, { desc = "telescope nvchad themes" })
 map("n", "<leader>[", ":bprevious<CR>", opts)
 opts.desc = "Next buffer"
 map("n", "<leader>]", ":bnext<CR>", opts)
-map("n", "<leader>pv", ":Neotree filesystem reveal left toggle<CR>")
-map("n", "<leader>pvb", ":Neotree buffers float<CR>")
-map("n", "<leader>pvg", ":Neotree git_status float <CR>")
 
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '<-2<CR>gv=gv")
@@ -60,19 +68,7 @@ end)
 map("n", "<leader>svwm", function()
 	require("vim-with-me").StopVimWithMe()
 end)
-
--- greatest remap ever
-map("x", "<leader>p", [["_dP]])
-
--- next greatest remap ever : asbjornHaland
-map({ "n", "v" }, "<leader>y", [["+y]])
-map("n", "<leader>Y", [["+Y]])
-map("n", "<leader>pp", [["+p]])
-
-map({ "n", "v" }, "<leader>d", [["_d]])
-
 -- This is going to get me cancelled
-map("i", "<C-c>", "<Esc>")
 
 map("n", "Q", "<nop>")
 map("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")

@@ -3,15 +3,21 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"folke/neodev.nvim",
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			{ "j-hui/fidget.nvim", opts = {} },
 			-- Autoformatting
 			"stevearc/conform.nvim",
-			-- Schema information
 			"b0o/SchemaStore.nvim",
 			"hrsh7th/cmp-buffer", -- source for text in buffer
+			"stevearc/conform.nvim",
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/nvim-cmp",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"j-hui/fidget.nvim",
 		},
 		lazy = false,
 		event = { "BufReadPre", "BufNewFile" },

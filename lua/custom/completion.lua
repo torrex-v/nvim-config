@@ -9,7 +9,17 @@ local lspkind = require("lspkind")
 lspkind.init({})
 -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
 require("luasnip.loaders.from_vscode").lazy_load()
-
+vim.diagnostic.config({
+	-- update_in_insert = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
+})
 cmp.setup({
 	completion = {
 		completeopt = "menu,menuone,preview,select",
@@ -62,7 +72,7 @@ cmp.setup({
 cmp.setup.cmdline("/", {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
-		{ name = "nvim_lsp" },
+		-- { name = "nvim_lsp" },
 		{ name = "vsnip" },
 		{ name = "buffer" },
 		{ name = "cody" },
@@ -74,7 +84,7 @@ cmp.setup.cmdline(":", {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources({
 		{ name = "path" },
-		{ name = "nvim_lsp" },
+		-- { name = "nvim_lsp" },
 	}, {
 		{
 			name = "cmdline",
