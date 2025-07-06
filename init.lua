@@ -27,6 +27,6 @@ require("lazy").setup({ import = "plugins" }, {
 })
 require("config")
 local ayucolor = "dark"
-ColorMyPencils("tokyonight-night")
+ColorMyPencils("tokyonight-night", true)
 -- ColorMyPencils("ayu", false)
 -- ColorMyPencils('rose-pine', true)

@@ -26,11 +26,11 @@ cmp.setup({
 	},
 	snippet = { -- configure how nvim-cmp interacts with snippet engine
 		expand = function(args)
-			vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-			-- luasnip.lsp_expand(args.body)
-			--   -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-			-- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-			-- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+			-- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+			luasnip.lsp_expand(args.body)
+			-- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+			vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+			vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
 		end,
 	},
 	mapping = cmp.mapping.preset.insert({
@@ -48,9 +48,11 @@ cmp.setup({
 	}),
 	-- sources for autocompletion
 	sources = cmp.config.sources({
-		{ name = "cody" },
+		-- { name = "copilot" }, -- text within current buffer
+		{ name = "sg" },
+		{ name = "supermaven" },
 		{ name = "nvim_lsp" },
-		{ name = "vsnip" }, -- snippets
+		-- { name = "vsnip" }, -- snippets
 		{ name = "luasnip" }, -- snippets
 		{ name = "buffer" }, -- text within current buffer
 		{ name = "path" }, -- file system paths

@@ -133,6 +133,7 @@ return {
 						})
 					end,
 				},
+				gopls = true,
 				-- rust_analyzer = {
 				-- 	settings = {
 				-- 		["rust-analyzer"] = {
@@ -185,6 +186,16 @@ return {
 					end,
 				},
 				htmx = true,
+				zls = {
+					root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+					settings = {
+						zls = {
+							enable_inlay_hints = true,
+							enable_snippets = true,
+							warn_style = true,
+						},
+					},
+				},
 				html = {
 					cmd = { "vscode-html-language-server", "--stdio" },
 					filetypes = { "html" },
@@ -198,10 +209,30 @@ return {
 				},
 				intelephense = true,
 				pyright = true,
-				omnisharp = { cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) } },
+				omnisharp = {
+					-- cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) },
+					cmd = {
+						"dotnet",
+						vim.fn.stdpath("data") .. "/mason/packages/omnisharp/libexec/OmniSharp.dll",
+						"--languageserver",
+						"--hostPID",
+						tostring(pid),
+						"--verbose",
+					},
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("*.sln", "*.csproj")(fname)
+							or require("lspconfig.util").find_git_ancestor(fname)
+							or vim.fn.getcwd()
+					end,
+				},
+
 				ts_ls = true,
 				tailwindcss = true,
-				csharp_ls = true,
+				-- csharp_ls = {
+				-- 	root_dir = function(fname)
+				-- 		return vim.fn.getcwd()
+				-- 	end,
+				-- },
 				jsonls = {
 					settings = {
 						json = {
@@ -265,9 +296,8 @@ return {
 						"ocaml.menhir",
 						"ocaml.cram",
 					},
-
-					-- TODO: Check if i still need the filtypes stuff i had before
 				},
+				-- 	root_dir = vim.fs.dirname(vim.fs.find({ "Cargo.toml", ".git" }, { upward = true })),
 
 				-- lexical = {
 				--     cmd = { "/home/tjdevries/.local/share/nvim/mason/bin/lexical", "server" },
@@ -291,10 +321,12 @@ return {
 				end
 			end, vim.tbl_keys(servers))
 
+			require("fidget").setup({})
 			require("mason").setup()
 			local ensure_installed = {
 				"stylua",
 				"lua_ls",
+				"gopls",
 				-- "delve",
 				-- "tailwind-language-server",
 			}
@@ -311,6 +343,7 @@ return {
 				}, config)
 				lspconfig[name].setup(config)
 			end
+			lspconfig.tsserver.setup({})
 			-- local servers = { 'tailwindcss', 'tsserver', 'jsonls', 'eslint' }
 			-- for _, lsp in pairs(servers) do
 			--   lspconfig[lsp].setup {

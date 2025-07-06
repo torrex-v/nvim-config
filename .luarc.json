@@ -70,5 +70,8 @@
         "C:\\Users\\Payman\\AppData\\Local\\nvim-data\\lazy\\telescope.nvim\\lua",
         "C:/Users/Payman/AppData/Local/nvim/lua",
         "${3rd}/luv/library"
+    ],
+    "diagnostics.globals": [
+        "vim"
     ]
 }
