@@ -33,7 +33,7 @@ return {
             if pcall(require, "cmp_nvim_lsp") then
                 capabilities = require("cmp_nvim_lsp").default_capabilities()
             end
-            local lspconfig = require("lspconfig")
+            local lspconfig = vim.lsp.config
             local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
             for type, icon in pairs(signs) do
                 local hl = "DiagnosticSign" .. type
@@ -125,14 +125,15 @@ return {
                 bashls = true,
                 -- gopls = true,
                 lua_ls = true,
-                eslint = {
-                    on_attach = function(client, bufnr)
-                        vim.api.nvim_create_autocmd("BufWritePre", {
-                            buffer = bufnr,
-                            command = "EslintFixAll",
-                        })
-                    end,
-                },
+                eslint = true,
+                -- {
+                --     on_attach = function(client, bufnr)
+                --         vim.api.nvim_create_autocmd("BufWritePre", {
+                --             buffer = bufnr,
+                --             command = "EslintFixAll",
+                --         })
+                --     end,
+                -- },
                 gopls = true,
                 -- rust_analyzer = {
                 -- 	settings = {
@@ -187,7 +188,7 @@ return {
                 },
                 htmx = true,
                 zls = {
-                    root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+                    root_dir = require('lspconfig.util').root_pattern(".git", "build.zig", "zls.json"),
                     settings = {
                         zls = {
                             enable_inlay_hints = true,
@@ -273,17 +274,17 @@ return {
                         },
                     },
                 },
-                yamlls = {
-                    settings = {
-                        yaml = {
-                            schemaStore = {
-                                enable = false,
-                                url = "",
-                            },
-                            schemas = require("schemastore").yaml.schemas(),
-                        },
-                    },
-                },
+                -- yamlls = {
+                --     settings = {
+                --         yaml = {
+                --             schemaStore = {
+                --                 enable = false,
+                --                 url = "",
+                --             },
+                --             schemas = require("schemastore").yaml.schemas(),
+                --         },
+                --     },
+                -- },
                 ocamllsp = {
                     manual_install = true,
                     settings = {
@@ -305,8 +306,6 @@ return {
                 -- },
 
                 clangd = {
-                    -- TODO: Could include cmd, but not sure those were all relevant flags.
-                    --    looks like something i would have added while i was floundering
                     init_options = { clangdFileStatus = true },
                     filetypes = { "c" },
                 },
@@ -341,7 +340,10 @@ return {
                     capabilities = capabilities,
                     on_attach = on_attach,
                 }, config)
-                lspconfig[name].setup(config)
+                -- vim.lsp.config(name,config)
+                vim.lsp.config[name] = config
+                vim.lsp.config(name, config) -- اول config رو تعریف کن
+                vim.lsp.enable(name)
             end
             -- local servers = { 'tailwindcss', 'tsserver', 'jsonls', 'eslint' }
             -- for _, lsp in pairs(servers) do
