@@ -27,6 +27,11 @@ require("lazy").setup({ import = "plugins" }, {
 })
 require("config")
 local ayucolor = "dark"
-ColorMyPencils("tokyonight-night", true)
+-- ColorMyPencils("tokyonight-night", true)
+
+vim.opt.termguicolors = true
+vim.cmd("syntax on")
+vim.cmd("filetype plugin indent on")
+vim.cmd.colorscheme("habamax")
 -- ColorMyPencils("ayu", false)
 -- ColorMyPencils('rose-pine', true)
