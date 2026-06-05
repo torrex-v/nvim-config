@@ -1,104 +1,115 @@
 local cmp = require("cmp")
-
 local luasnip = require("luasnip")
-luasnip.config.set_config({
-	history = false,
-	updateevents = "TextChanged,TextChangedI",
-})
 local lspkind = require("lspkind")
-lspkind.init({})
--- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-require("luasnip.loaders.from_vscode").lazy_load()
-vim.diagnostic.config({
-	-- update_in_insert = true,
-	float = {
-		focusable = false,
-		style = "minimal",
-		border = "rounded",
-		source = "always",
-		header = "",
-		prefix = "",
-	},
-})
-cmp.setup({
-	completion = {
-		completeopt = "menu,menuone,preview,select",
-	},
-	snippet = { -- configure how nvim-cmp interacts with snippet engine
-		expand = function(args)
-			-- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-			luasnip.lsp_expand(args.body)
-			-- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-			vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-			vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
-		end,
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-		["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.abort(), -- close completion window
-		-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
-		["<TAB>"] = cmp.mapping.confirm({
-			select = false,
-			behavior = cmp.ConfirmBehavior.Replace,
-		}), -- confirm completion
-	}),
-	-- sources for autocompletion
-	sources = cmp.config.sources({
-		-- { name = "copilot" }, -- text within current buffer
-		{ name = "sg" },
-		{ name = "supermaven" },
-		{ name = "nvim_lsp" },
-		-- { name = "vsnip" }, -- snippets
-		{ name = "luasnip" }, -- snippets
-		{ name = "buffer" }, -- text within current buffer
-		{ name = "path" }, -- file system paths
-	}),
-	-- configure lspkind for vs-code like pictograms in completion menu
-	formatting = {
-		format = lspkind.cmp_format({
-			maxwidth = 50,
-			ellipsis_char = "...",
-			with_tsxt = true,
-			menu = {
-				nvim_lsp = "[LSP]",
-				cody = "[cody]",
-			},
-		}),
-	},
-})
--- `/` cmdline setup.
-cmp.setup.cmdline("/", {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = {
-		-- { name = "nvim_lsp" },
-		{ name = "vsnip" },
-		{ name = "buffer" },
-		{ name = "cody" },
-	},
+
+-- Configure Luasnip
+luasnip.config.set_config({
+    history = false,
+    updateevents = "TextChanged,TextChangedI",
 })
 
--- `:` cmdline setup.
-cmp.setup.cmdline(":", {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources({
-		{ name = "path" },
-		-- { name = "nvim_lsp" },
-	}, {
-		{
-			name = "cmdline",
-			option = {
-				ignore_cmds = { "Man", "!" },
-			},
-		},
-	}),
+-- Load snippets
+require("luasnip.loaders.from_vscode").lazy_load()
+
+-- Diagnostic config
+vim.diagnostic.config({
+    float = {
+        focusable = false,
+        style = "minimal",
+        border = "rounded",
+        source = if_many,
+        header = "",
+        prefix = "",
+    },
 })
+
+-- Initialize lspkind
+-- lspkind.init({})
+
+cmp.setup({
+    completion = {
+        completeopt = "menu,menuone,preview", -- Removed 'select' to prevent auto-selection
+    },
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body) -- Use only luasnip, remove others
+        end,
+    },
+    mapping = cmp.mapping.preset.insert({
+        ["<C-k>"] = cmp.mapping.select_prev_item(),
+        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Restored Enter key
+        ["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+    }),
+    sources = cmp.config.sources({
+        { name = "nvim_lsp", priority = 10 }, -- Give LSP highest priority
+        { name = "luasnip",  priority = 8 },
+        { name = "buffer",   priority = 5 },
+        { name = "path",     priority = 3 },
+        -- Comment out conflicting sources temporarily for debugging
+        -- { name = "sg" },
+        -- { name = "supermaven" },
+    }),
+    formatting = {
+        format = function(entry, item)
+            -- No lspkind, just return the item
+            return item
+        end,
+    },
+    -- formatting = {
+    --     format = function(entry, item)
+    --         -- Custom format that preserves rust-analyzer's label details
+    --         local kind = lspkind.cmp_format({
+    --             mode = "symbol_text",
+    --             maxwidth = 50,
+    --             ellipsis_char = "...",
+    --             show_labelDetails = true, -- CRITICAL for rust-analyzer completions
+    --         })(entry, item)
+    --
+    --         -- Add menu info without breaking the completion
+    --         local menu_icon = {
+    --             nvim_lsp = "λ",
+    --             luasnip = "✂",
+    --             buffer = "≡",
+    --             path = "📁",
+    --         }
+    --         kind.menu = menu_icon[entry.source.name] or ""
+    --
+    --         return kind
+    --     end,
+    -- },
+})
+
+-- Cmdline setups (keep these as they are, but remove conflicting sources)
+cmp.setup.cmdline("/", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = "buffer" },
+    },
+})
+
+cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = "path" },
+    }, {
+        {
+            name = "cmdline",
+            option = {
+                ignore_cmds = { "Man", "!" },
+            },
+        },
+    }),
+})
+
+-- Database filetype setup
 cmp.setup.filetype({ "sql" }, {
-	sources = {
-		{ name = "vim-dadbod-completion" },
-		{ name = "buffer" },
-	},
+    sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" },
+    },
 })

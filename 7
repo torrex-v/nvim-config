@@ -107,7 +107,7 @@ return {
 								postfix = {
 									enable = true,
 								},
-								-- snippets = { enable = true },
+								snippets = { enable = true },
 							},
 							assist = {
 								importGranularity = "module",
@@ -225,6 +225,15 @@ return {
 				--             or vim.fn.getcwd()
 				--     end,
 				-- },
+				-- roslyn_ls = {
+				-- 	filetypes = { "razor,cs" },
+				-- 	settings = {
+				-- 		["csharp|background_analysis"] = {
+				-- 			dotnet_analyzer_diagnostics_scope = "openFiles",
+				-- 			dotnet_compiler_diagnostics_scope = "openFiles",
+				-- 		},
+				-- 	},
+				-- },
 				ocamllsp = {
 					manual_install = true,
 					settings = { codelens = { enable = true } },
@@ -234,38 +243,17 @@ return {
 					init_options = { clangdFileStatus = true },
 					filetypes = { "c", "cpp" },
 				},
-				roslyn = {
-					filetypes = { "cs", "razor" }, -- ✅ corrected
-					settings = {
-						["csharp|background_analysis"] = {
-							dotnet_analyzer_diagnostics_scope = "openfiles",
-							dotnet_compiler_diagnostics_scope = "openfiles",
-						},
-					},
-				},
 			}
+
 			-- Setup Mason and install tools
 			require("fidget").setup()
-			require("mason").setup({
-				registries = {
-					"github:Crashdummyy/mason-registry", -- ✅ Corrected address
-					"github:mason-org/mason-registry", -- Keep the default registry
-				},
-			})
+			require("mason").setup()
 
+			local ensure_installed = { "stylua", "lua_ls", "gopls", "roslyn_ls" }
 			local servers_to_install = vim.tbl_filter(function(name)
 				local config = servers[name]
 				return type(config) ~= "table" or not config.manual_install
 			end, vim.tbl_keys(servers))
-			local ensure_installed = {
-				"stylua",
-				"lua_ls",
-				"gopls",
-				vim.tbl_filter(function(name)
-					local cfg = servers[name]
-					return not (type(cfg) == "table" and cfg.manual_install)
-				end, vim.tbl_keys(servers)),
-			}
 
 			vim.list_extend(ensure_installed, servers_to_install)
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
@@ -283,6 +271,7 @@ return {
 				vim.lsp.config(name, config)
 				vim.lsp.enable(name)
 			end
+			vim.lsp.enable("roslyn")
 			vim.lsp.config("roslyn", {
 				filetypes = { "razor,cs" },
 				settings = {
@@ -292,7 +281,6 @@ return {
 					},
 				},
 			})
-			vim.lsp.enable("roslyn")
 			-- vim.lsp.config.rust_analyzer = {
 			--     cmd = { "rust-analyzer" },
 			--     settings = { ["rust-analyzer"] = { completion = { autoimport = { enable = true } } } }
