@@ -1,10 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- put this in your main init.lua file ( before lazy setup )
-vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46_cache/"
-
--- put this after lazy setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
@@ -25,13 +21,10 @@ require("lazy").setup({ import = "plugins" }, {
 		notify = false,
 	},
 })
+-- vim.pack.add({
+-- 	"https://github.com/nvim-treesitter/nvim-treesitter",
+-- 	"https://github.com/neovim/nvim-lspconfig",
+-- 	"https://github.com/stevearc/conform.nvim",
+-- })
 require("config")
-local ayucolor = "dark"
--- ColorMyPencils("tokyonight-night", true)
-
-vim.opt.termguicolors = true
-vim.cmd("syntax on")
-vim.cmd("filetype plugin indent on")
-vim.cmd.colorscheme("habamax")
--- ColorMyPencils("ayu", false)
--- ColorMyPencils('rose-pine', true)
+ColorMyPencils("tokyonight-night", true)

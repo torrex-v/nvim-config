@@ -35,19 +35,16 @@ map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 -- map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 -- map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
 
-map("n", "<leader>x", function()
-	require("nvchad.tabufline").close_buffer()
-end, { desc = "buffer close" })
-map("n", "<tab>", function()
-	require("nvchad.tabufline").next()
-end, { desc = "buffer goto next" })
+local map = vim.keymap.set
 
-map("n", "<S-tab>", function()
-	require("nvchad.tabufline").prev()
-end, { desc = "buffer goto prev" })
-map("n", "<leader>th", function()
-	require("nvchad.themes").open()
-end, { desc = "telescope nvchad themes" })
+-- Close current buffer
+map("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close buffer" })
+
+-- Next buffer
+map("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+
+-- Previous buffer
+map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 --------------------
 map("n", "<leader>[", ":bprevious<CR>", opts)
 opts.desc = "Next buffer"

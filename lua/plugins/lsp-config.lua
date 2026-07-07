@@ -91,7 +91,7 @@ return {
 			local servers = {
 				bashls = true,
 				lua_ls = true,
-				gopls = true,
+				gopls = false,
 				rust_analyzer = {
 					-- This is crucial for completions like String::
 					settings = {
@@ -260,11 +260,6 @@ return {
 			local ensure_installed = {
 				"stylua",
 				"lua_ls",
-				"gopls",
-				vim.tbl_filter(function(name)
-					local cfg = servers[name]
-					return not (type(cfg) == "table" and cfg.manual_install)
-				end, vim.tbl_keys(servers)),
 			}
 
 			vim.list_extend(ensure_installed, servers_to_install)
@@ -272,19 +267,24 @@ return {
 
 			-- Setup LSP servers
 			for name, config in pairs(servers) do
-				if config == true then
-					config = {}
+				if config == false then
+					goto continue
 				end
+
+				config = config == true and {} or config
+
 				config = vim.tbl_deep_extend("force", {
 					capabilities = capabilities,
 					on_attach = on_attach,
 				}, config)
-				vim.lsp.config[name] = config
+
 				vim.lsp.config(name, config)
 				vim.lsp.enable(name)
+
+				::continue::
 			end
 			vim.lsp.config("roslyn", {
-				filetypes = { "razor,cs" },
+				filetypes = { "razor", "cs" },
 				settings = {
 					["csharp|background_analysis"] = {
 						dotnet_analyzer_diagnostics_scope = "openfiles",

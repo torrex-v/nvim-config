@@ -1,7 +1,23 @@
 --require('nvim-treesitter.install').compilers = { "gcc" }
-require("config.nvchadUi")
+-- require("config.nvchadUi")
 require("config.set")
 require("config.remap")
+
+vim.opt.termguicolors = true
+-- message be buffer
+vim.o.cmdheight = 0
+require("vim._core.ui2").enable()
+-- Rounded completion menu
+vim.opt.pumborder = "rounded"
+
+-- Rounded borders for built-in floating windows
+vim.opt.winborder = "rounded"
+
+-- No command line when idle (works especially well with UI2)
+vim.opt.cmdheight = 0
+
+vim.cmd("syntax on")
+vim.cmd("filetype plugin indent on")
 
 local augroup = vim.api.nvim_create_augroup
 local group = augroup("thePayman", {})
