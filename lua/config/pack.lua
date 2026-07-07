@@ -58,6 +58,15 @@ local function plugin_name(src)
 	return src:gsub("%.git$", ""):match("[^/]+$")
 end
 
+local function plugin_version(spec)
+	local version = spec.version or spec.tag or spec.branch or spec.commit
+	if version == "*" then
+		return nil
+	end
+
+	return version
+end
+
 local function module_name(spec)
 	return spec.main or (spec.name or plugin_name(spec[1] or spec.src)):gsub("%.nvim$", ""):gsub("%.vim$", "")
 end
@@ -92,7 +101,7 @@ local function add_pack_spec(spec)
 	local pack_spec = {
 		src = gh(src),
 		name = spec.name,
-		version = spec.version == "*" and nil or spec.version or spec.tag or spec.branch or spec.commit,
+		version = plugin_version(spec),
 	}
 	local name = pack_spec.name or plugin_name(pack_spec.src)
 
@@ -167,6 +176,10 @@ function M.setup()
 	})
 
 	vim.pack.add(pack_specs)
+
+	for _, spec in ipairs(pack_specs) do
+		pcall(vim.cmd.packadd, spec.name or plugin_name(spec.src))
+	end
 
 	for _, spec in ipairs(specs) do
 		local ok, err = pcall(function()

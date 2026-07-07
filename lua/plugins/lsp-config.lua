@@ -255,7 +255,7 @@ return {
 
 			local servers_to_install = vim.tbl_filter(function(name)
 				local config = servers[name]
-				return type(config) ~= "table" or not config.manual_install
+				return config ~= false and (type(config) ~= "table" or not config.manual_install)
 			end, vim.tbl_keys(servers))
 			local ensure_installed = {
 				"stylua",

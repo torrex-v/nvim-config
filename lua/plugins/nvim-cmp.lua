@@ -14,7 +14,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-vsnip",
 		"hrsh7th/vim-vsnip",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
+		{ "antosha417/nvim-lsp-file-operations", main = "lsp-file-operations", config = true },
 	},
 	config = function()
 		require("custom.completion")

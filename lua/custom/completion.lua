@@ -43,7 +43,13 @@ cmp.setup({
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Restored Enter key
-        ["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace })
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp", priority = 10 }, -- Give LSP highest priority
@@ -85,15 +91,25 @@ cmp.setup({
 })
 
 -- Cmdline setups (keep these as they are, but remove conflicting sources)
+local cmdline_mapping = cmp.mapping.preset.cmdline({
+    ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            cmp.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace })
+        else
+            fallback()
+        end
+    end, { "c" }),
+})
+
 cmp.setup.cmdline("/", {
-    mapping = cmp.mapping.preset.cmdline(),
+    mapping = cmdline_mapping,
     sources = {
         { name = "buffer" },
     },
 })
 
 cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
+    mapping = cmdline_mapping,
     sources = cmp.config.sources({
         { name = "path" },
     }, {
