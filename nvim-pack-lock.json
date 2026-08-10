@@ -304,6 +304,10 @@
       "rev": "ff483051a47e27d84bdef47703538df1ed9f4a47",
       "src": "https://github.com/rose-pine/neovim"
     },
+    "roslyn.nvim": {
+      "rev": "7d8c166a0c70473ffa558d4d2430769d581fa8dd",
+      "src": "https://github.com/seblyng/roslyn.nvim"
+    },
     "rust-tools.nvim": {
       "rev": "676187908a1ce35ffcd727c654ed68d851299d3e",
       "src": "https://github.com/simrat39/rust-tools.nvim"

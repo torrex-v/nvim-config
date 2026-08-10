@@ -51,6 +51,7 @@ return {
 			-- Keymaps
 			local opts = { noremap = true, silent = true }
 			local on_attach = function(client, bufnr)
+				print(client.name)
 				opts.buffer = bufnr
 
 				-- Navigation
@@ -235,8 +236,15 @@ return {
 					filetypes = { "c", "cpp" },
 				},
 				roslyn = {
-					filetypes = { "cs", "razor" }, -- ✅ corrected
+					filetypes = { "cs", "razor", "razor,cs,cshtml", "cshtml" },
 					settings = {
+						["csharp|inlay_hints"] = {
+							csharp_enable_inlay_hints_for_implicit_object_creation = true,
+							csharp_enable_inlay_hints_for_implicit_variable_types = true,
+						},
+						["csharp|code_lens"] = {
+							dotnet_enable_references_code_lens = true,
+						},
 						["csharp|background_analysis"] = {
 							dotnet_analyzer_diagnostics_scope = "openfiles",
 							dotnet_compiler_diagnostics_scope = "openfiles",
@@ -283,9 +291,18 @@ return {
 
 				::continue::
 			end
+			-- roslyn.nvim
 			vim.lsp.config("roslyn", {
-				filetypes = { "razor", "cs" },
+				on_attach = on_attach,
+				filetypes = { "cs", "razor", "razor,cs,cshtml", "cshtml" },
 				settings = {
+					["csharp|inlay_hints"] = {
+						csharp_enable_inlay_hints_for_implicit_object_creation = true,
+						csharp_enable_inlay_hints_for_implicit_variable_types = true,
+					},
+					["csharp|code_lens"] = {
+						dotnet_enable_references_code_lens = true,
+					},
 					["csharp|background_analysis"] = {
 						dotnet_analyzer_diagnostics_scope = "openfiles",
 						dotnet_compiler_diagnostics_scope = "openfiles",
@@ -293,6 +310,7 @@ return {
 				},
 			})
 			vim.lsp.enable("roslyn")
+			-- rust_analyzer
 			-- vim.lsp.config.rust_analyzer = {
 			--     cmd = { "rust-analyzer" },
 			--     settings = { ["rust-analyzer"] = { completion = { autoimport = { enable = true } } } }
