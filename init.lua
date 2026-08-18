@@ -27,8 +27,7 @@ if ok and not treesitter_language.ft_to_lang then
 	treesitter_language.ft_to_lang = treesitter_language.get_lang
 end
 if vim.treesitter and vim.treesitter.language and not vim.treesitter.language.ft_to_lang then
-	vim.treesitter.language.ft_to_lang = vim.treesitter.language.get_lang
-		or (ok and treesitter_language.ft_to_lang)
+	vim.treesitter.language.ft_to_lang = vim.treesitter.language.get_lang or (ok and treesitter_language.ft_to_lang)
 end
 
 require("config.pack").setup()
@@ -63,4 +62,4 @@ if not treesitter_configs.get_module then
 end
 
 require("config")
-ColorMyPencils("tokyonight-night", true)
+ColorMyPencils("kanagawa", true)

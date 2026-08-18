@@ -162,6 +162,18 @@ local function run_build_hook(hook, path)
 end
 
 function M.setup()
+	vim.api.nvim_create_user_command("PackAdd", function(opts)
+		vim.pack.add(opts.fargs)
+	end, { desc = "Add a plugin", nargs = "+" })
+
+	vim.api.nvim_create_user_command("PackUpdate", function(opts)
+		if opts.args ~= "" then
+			local plugins = vim.split(opts.args, "%s+", { trimempty = true })
+			vim.pack.update(plugins)
+		else
+			vim.pack.update()
+		end
+	end, { desc = "Update all plugins or specific ones", nargs = "*" })
 	vim.api.nvim_create_autocmd("PackChanged", {
 		callback = function(ev)
 			if ev.data.kind ~= "install" and ev.data.kind ~= "update" then

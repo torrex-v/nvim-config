@@ -116,3 +116,8 @@ vim.api.nvim_set_keymap(
 	'<Cmd>lua require"sg.extensions.telescope".fuzzy_search_result()<CR>',
 	{ silent = false }
 )
+local colorscheme_picker = require("config/color_scheme_picker")
+
+vim.keymap.set("n", "<leader>cs", colorscheme_picker.open, {
+	desc = "Colorscheme picker",
+})

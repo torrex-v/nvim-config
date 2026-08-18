@@ -6,7 +6,16 @@ require("config.remap")
 vim.opt.termguicolors = true
 -- message be buffer
 vim.o.cmdheight = 0
-require("vim._core.ui2").enable()
+require("vim._core.ui2").enable({
+	enable = true,
+	msg = {
+		target = "cmd",
+		pager = { height = 0.5 },
+		dialog = { height = 0.5 },
+		cmd = { height = 0.5 },
+		msg = { height = 0.5, timeout = 4500 },
+	},
+})
 -- Rounded completion menu
 vim.opt.pumborder = "rounded"
 
@@ -54,4 +63,7 @@ function ColorMyPencils(color, noBg)
 		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 	end
+end
+function PickColorscheme()
+	-- picker implementation
 end

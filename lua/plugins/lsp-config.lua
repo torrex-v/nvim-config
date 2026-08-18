@@ -84,8 +84,9 @@ return {
 				vim.keymap.set("n", "<leader>wl", vim.lsp.buf.list_workspace_folders, opts)
 
 				-- Misc
-				vim.keymap.set("n", "<leader>rs", ":lua restart<CR>", opts)
+				vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts)
 				vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
+				-- vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 			end
 
 			-- Server configurations
