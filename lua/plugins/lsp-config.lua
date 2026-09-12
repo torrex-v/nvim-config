@@ -55,36 +55,53 @@ return {
 				opts.buffer = bufnr
 
 				-- Navigation
+				opts.desc = "Go to definition"
 				vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+				opts.desc = "Go to declaration"
 				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+				opts.desc = "Go to implementation"
 				vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+				opts.desc = "Go to type definition"
 				vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+				opts.desc = "Go to references"
 				vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+				opts.desc = "Go to references (Telescope)"
 				vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+				opts.desc = "Hover documentation"
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 				-- Actions
+				opts.desc = "Code action"
 				vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+				opts.desc = "Rename symbol"
 				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
 				-- Diagnostics
+				opts.desc = "Show line diagnostics"
 				vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+				opts.desc = "Show buffer diagnostics (Telescope)"
 				vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 				vim.keymap.set("n", "[d", function()
 					vim.diagnostic.jump({ count = 1, float = true })
-				end)
+				end, { buffer = bufnr, desc = "Next diagnostic" })
 				vim.keymap.set("n", "]d", function()
 					vim.diagnostic.jump({ count = -1, float = true })
-				end)
+				end, { buffer = bufnr, desc = "Previous diagnostic" })
 
 				-- Workspace
+				opts.desc = "Workspace symbol"
 				vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+				opts.desc = "Add workspace folder"
 				vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+				opts.desc = "Remove workspace folder"
 				vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+				opts.desc = "List workspace folders"
 				vim.keymap.set("n", "<leader>wl", vim.lsp.buf.list_workspace_folders, opts)
 
 				-- Misc
+				opts.desc = "Restart LSP"
 				vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts)
+				opts.desc = "Signature help"
 				vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
 				-- vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 			end

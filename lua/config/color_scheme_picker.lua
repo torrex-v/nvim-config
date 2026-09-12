@@ -303,24 +303,33 @@ function M.open()
 		noremap = true,
 	}
 
+	list_opts.desc = "Colorscheme picker: move down"
 	vim.keymap.set("n", "j", move_down, list_opts)
+	list_opts.desc = "Colorscheme picker: move up"
 	vim.keymap.set("n", "k", move_up, list_opts)
 
+	list_opts.desc = "Colorscheme picker: move down"
 	vim.keymap.set("n", "<Down>", move_down, list_opts)
+	list_opts.desc = "Colorscheme picker: move up"
 	vim.keymap.set("n", "<Up>", move_up, list_opts)
 
+	list_opts.desc = "Colorscheme picker: toggle transparency"
 	vim.keymap.set("n", "t", toggle_transparent, list_opts)
 
+	list_opts.desc = "Colorscheme picker: search"
 	vim.keymap.set("n", "/", enter_search, list_opts)
 
+	list_opts.desc = "Colorscheme picker: apply and close"
 	vim.keymap.set("n", "<CR>", function()
 		close(false)
 	end, list_opts)
 
+	list_opts.desc = "Colorscheme picker: cancel and close"
 	vim.keymap.set("n", "q", function()
 		close(true)
 	end, list_opts)
 
+	list_opts.desc = "Colorscheme picker: cancel and close"
 	vim.keymap.set("n", "<Esc>", function()
 		close(true)
 	end, list_opts)
@@ -335,16 +344,20 @@ function M.open()
 		noremap = true,
 	}
 
+	search_opts.desc = "Colorscheme picker: leave search"
 	vim.keymap.set("i", "<Esc>", leave_search, search_opts)
 
+	search_opts.desc = "Colorscheme picker: leave search"
 	vim.keymap.set("i", "<CR>", leave_search, search_opts)
 
+	search_opts.desc = "Colorscheme picker: leave search and move down"
 	vim.keymap.set("i", "<Down>", function()
 		vim.cmd("stopinsert")
 		vim.api.nvim_set_current_win(list_win)
 		move_down()
 	end, search_opts)
 
+	search_opts.desc = "Colorscheme picker: leave search and move up"
 	vim.keymap.set("i", "<Up>", function()
 		vim.cmd("stopinsert")
 		vim.api.nvim_set_current_win(list_win)

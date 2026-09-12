@@ -242,22 +242,22 @@ return {
 				dapui.close()
 			end
 
-			vim.keymap.set("n", "<F5>", dap.continue, {})
-			vim.keymap.set("n", "<F10>", dap.step_over, { silent = true })
-			vim.keymap.set("n", "<F11>", dap.step_into, { silent = true })
-			vim.keymap.set("n", "<F12>", dap.step_out, { silent = true })
-			vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { silent = true })
+			vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: continue" })
+			vim.keymap.set("n", "<F10>", dap.step_over, { silent = true, desc = "Debug: step over" })
+			vim.keymap.set("n", "<F11>", dap.step_into, { silent = true, desc = "Debug: step into" })
+			vim.keymap.set("n", "<F12>", dap.step_out, { silent = true, desc = "Debug: step out" })
+			vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { silent = true, desc = "Debug: toggle breakpoint" })
 			-- vim.keymap.set('n', '<Leader>B', dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")),
 			--     { silent = true })
 			-- vim.keymap.set('n', '<Leader>lp', dap.set_breakpoin(vim.fn.input("Log point message: ")), { silent = true })
-			vim.keymap.set("n", "<Leader>dr", dap.repl.open, { silent = true })
-			vim.keymap.set("n", "<Leader>dl", dap.run_last, { silent = true })
+			vim.keymap.set("n", "<Leader>dr", dap.repl.open, { silent = true, desc = "Debug: open REPL" })
+			vim.keymap.set("n", "<Leader>dl", dap.run_last, { silent = true, desc = "Debug: run last" })
 
-			vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
-			vim.keymap.set("n", "<space>gb", dap.run_to_cursor)
+			vim.keymap.set("n", "<space>b", dap.toggle_breakpoint, { desc = "Debug: toggle breakpoint" })
+			vim.keymap.set("n", "<space>gb", dap.run_to_cursor, { desc = "Debug: run to cursor" })
 			vim.keymap.set("n", "<space>?", function()
 				require("dapui").eval(nil, { enter = true })
-			end)
+			end, { desc = "Debug: evaluate expression under cursor" })
 		end,
 	},
 }

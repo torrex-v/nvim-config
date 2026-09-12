@@ -13,7 +13,7 @@ return {
             vim.wo.number = true
             vim.wo.rnu = true
            -- ColorMyPencils()
-        end)
+        end, { desc = "Toggle zen mode" })
 
 
         vim.keymap.set("n", "<leader>zZ", function()
@@ -29,6 +29,6 @@ return {
             vim.wo.rnu = false
             vim.opt.colorcolumn = "0"
            -- ColorMyPencils()
-        end)
+        end, { desc = "Toggle zen mode (narrow, 80 cols)" })
     end
 }

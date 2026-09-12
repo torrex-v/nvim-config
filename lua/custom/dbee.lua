@@ -1,6 +1,6 @@
 vim.keymap.set("n", "<space>od", function()
     require("dbee").open()
-end)
+end, { desc = "Open database UI" })
 
 ---@diagnostic disable-next-line: param-type-mismatch
 local base = vim.fs.joinpath(vim.fn.stdpath "state", "dbee", "notes")
