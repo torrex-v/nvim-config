@@ -41,6 +41,8 @@ cmp.setup({
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-@>"] = cmp.mapping.complete(), -- Terminal sends <C-@> for Ctrl+Space
+        ["<M-Space>"] = cmp.mapping.complete(), -- Alt+Space fallback
         ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Restored Enter key
         ["<Tab>"] = cmp.mapping(function(fallback)

@@ -41,3 +41,8 @@ vim.opt.isfname:append("@-@")
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+
+-- Bidirectional (BiDi) text and Persian/Arabic script support
+-- Offload shaping and bidi reordering to the terminal emulator (WezTerm)
+vim.opt.termbidi = true
+vim.opt.delcombine = true

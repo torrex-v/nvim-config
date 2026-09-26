@@ -50,6 +50,13 @@ map("n", "<leader>[", ":bprevious<CR>", opts)
 opts.desc = "Next buffer"
 map("n", "<leader>]", ":bnext<CR>", opts)
 
+-- Jump list navigation (VS Code style: Ctrl+- to jump back, Ctrl+= or Alt+Right to jump forward)
+map("n", "<C-->", "<C-o>", { desc = "Jump backward (jump list)" })
+map("n", "<C-_>", "<C-o>", { desc = "Jump backward (jump list, terminal)" })
+map("n", "<C-=>", "<cmd>execute 'normal! \\<lt>C-i>'<CR>", { desc = "Jump forward (jump list)" })
+map("n", "<M-Left>", "<C-o>", { desc = "Jump backward (jump list)" })
+map("n", "<M-Right>", "<cmd>execute 'normal! \\<lt>C-i>'<CR>", { desc = "Jump forward (jump list)" })
+
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
@@ -121,3 +128,9 @@ local colorscheme_picker = require("config/color_scheme_picker")
 vim.keymap.set("n", "<leader>cs", colorscheme_picker.open, {
 	desc = "Colorscheme picker",
 })
+
+-- Toggle Right-to-Left (RTL) mode for the active window
+vim.keymap.set("n", "<leader>rl", function()
+	vim.wo.rightleft = not vim.wo.rightleft
+	vim.notify("Right-to-Left: " .. (vim.wo.rightleft and "ON" or "OFF"), vim.log.levels.INFO)
+end, { desc = "Toggle Right-to-Left (RTL) mode" })
