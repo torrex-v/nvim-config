@@ -1,19 +1,19 @@
 local data = assert(vim.fn.stdpath("data")) --[[@as string]]
 
 require("telescope").setup({
-	extensions = {
-		fzf = {},
-		["ui-select"] = {
-			require("telescope.themes").get_dropdown({
-				-- even more opts
-			}),
-		},
-		wrap_results = true,
-		-- history = {
-		-- 	path = vim.fs.joinpath(data, "telescope_history.sqlite3"),
-		-- 	limit = 100,
-		-- },
-	},
+    extensions = {
+        fzf = {},
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown({
+                -- even more opts
+            }),
+        },
+        wrap_results = true,
+        -- history = {
+        -- 	path = vim.fs.joinpath(data, "telescope_history.sqlite3"),
+        -- 	limit = 100,
+        -- },
+    },
 })
 
 pcall(require("telescope").load_extension, "fzf")
@@ -29,17 +29,18 @@ vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find help tags" })
 vim.keymap.set("n", "<leader>gw", builtin.grep_string, { desc = "Grep word under cursor" })
 vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Find git files" })
+vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Find keymaps" })
 vim.keymap.set("n", "<leader>ps", function()
-	builtin.grep_string({ search = vim.fn.input("Grep > ") })
+    builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end, { desc = "Grep for input" })
 
 vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in current buffer" })
 
 vim.keymap.set("n", "<leader>fa", function()
-	---@diagnostic disable-next-line: param-type-mismatch
-	builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") })
+    ---@diagnostic disable-next-line: param-type-mismatch
+    builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") })
 end, { desc = "Find files in installed plugins" })
 
 vim.keymap.set("n", "<space>en", function()
-	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+    builtin.find_files({ cwd = vim.fn.stdpath("config") })
 end, { desc = "Find files in nvim config" })
