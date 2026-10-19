@@ -81,3 +81,18 @@ Add the following options to set.lua:
 
 This keeps all folds expanded by default when you open files, while still allowing you to fold/unfold on demand with za or
 zM.
+
+// replacing word method 1
+*(star) on word will give you all words under your cursor
+C = change motion
+ciw, enter,n(next),.(dot-to redo the action)
+// method 2
+:%s/Post/Pots/gc
+
+// using registered
+"3p to paste from reg or "3y to yenk
+
++Register - global register in os
+"y+
+"%p
+:let @+=@%
